@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — IPinfo Enrichment Provider
 Provides IP geolocation and ASN data via IPinfo API.
@@ -27,10 +29,10 @@ class IPinfoProvider(BaseProvider):
     def name(self) -> str:
         return "IPinfo"
 
-    def _load_fixture(self, indicator: str) -> ProviderResult | None:
+    def _load_fixture(self, indicator: str) -> Optional[ProviderResult]:
         """Load cached fixture data for the given IP."""
         try:
-            data: dict[str, Any] = json.loads(FIXTURE_PATH.read_text())
+            data: Dict[str, Any] = json.loads(FIXTURE_PATH.read_text())
             if indicator in data:
                 entry = data[indicator]
                 return ProviderResult(

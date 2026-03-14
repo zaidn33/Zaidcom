@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — VirusTotal Enrichment Provider
 Checks IP, domain, and URL reputation via VirusTotal API v3.
@@ -28,10 +30,10 @@ class VirusTotalProvider(BaseProvider):
     def name(self) -> str:
         return "VirusTotal"
 
-    def _load_fixture(self, indicator: str) -> ProviderResult | None:
+    def _load_fixture(self, indicator: str) -> Optional[ProviderResult]:
         """Load cached fixture data for the given indicator."""
         try:
-            data: dict[str, Any] = json.loads(FIXTURE_PATH.read_text())
+            data: Dict[str, Any] = json.loads(FIXTURE_PATH.read_text())
             if indicator in data:
                 entry = data[indicator]
                 return ProviderResult(

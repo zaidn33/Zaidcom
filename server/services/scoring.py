@@ -1,3 +1,4 @@
+from typing import List, Dict, Any, Optional
 """
 Sentry AI — Weighted Risk Scoring Engine
 Deterministic signal-based scoring with human-readable reasoning summary.
@@ -25,7 +26,7 @@ from models.case import RiskClassification
 
 
 # ── Weight Table ──────────────────────────────────────────────────
-SIGNAL_WEIGHTS: dict[str, int] = {
+SIGNAL_WEIGHTS: Dict[str, int] = {
     "malicious_ip": 35,
     "vpn_detected": 15,
     "impossible_travel": 25,
@@ -36,7 +37,7 @@ SIGNAL_WEIGHTS: dict[str, int] = {
 }
 
 # Human-readable descriptions for the reasoning summary
-SIGNAL_DESCRIPTIONS: dict[str, str] = {
+SIGNAL_DESCRIPTIONS: Dict[str, str] = {
     "malicious_ip": "IP flagged as malicious by threat intelligence",
     "vpn_detected": "active VPN or proxy usage detected",
     "impossible_travel": "impossible travel detected between login locations",
@@ -52,13 +53,13 @@ class ScoringResult:
     """Complete scoring output with score, classification, and reasoning."""
     score: int
     classification: RiskClassification
-    signals: list[str]
+    signals: List[str]
     reasoning: str
 
 
 def compute_risk(
-    signals: list[str],
-    context_details: dict[str, str] | None = None,
+    signals: List[str],
+    context_details: Dict[str, Optional[str]] = None,
 ) -> ScoringResult:
     """
     Compute a deterministic risk score from detected signals.
@@ -74,7 +75,7 @@ def compute_risk(
     """
     context_details = context_details or {}
     raw_score = 0
-    reasoning_parts: list[str] = []
+    reasoning_parts: List[str] = []
 
     for signal in signals:
         weight = SIGNAL_WEIGHTS.get(signal, 0)

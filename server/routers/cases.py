@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — Cases Router
 Endpoints for fetching case investigations from the SQLite Audit Store.
@@ -12,8 +14,8 @@ from store.audit import list_cases, get_case
 router = APIRouter(prefix="/api/cases", tags=["Cases"])
 
 
-@router.get("", response_model=BaseResponse[list[CaseRecord]])
-async def get_all_cases() -> BaseResponse[list[CaseRecord]]:
+@router.get("", response_model=BaseResponse[List[CaseRecord]])
+async def get_all_cases() -> BaseResponse[List[CaseRecord]]:
     """List recent investigation cases from the database."""
     cases = await list_cases()
     return BaseResponse(

@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — Base Enrichment Provider (Abstract Base Class)
 All enrichment clients (VirusTotal, AbuseIPDB, IPinfo, vpnapi.io)
@@ -13,7 +15,7 @@ from pydantic import BaseModel
 class ProviderResult(BaseModel):
     """Standardised result returned by every enrichment provider."""
     provider: str               # e.g. "VirusTotal"
-    raw: dict[str, Any] = {}    # Raw API response (or fixture)
+    raw: Dict[str, Any] = {}    # Raw API response (or fixture)
     summary: str = ""           # Human-readable one-liner
     is_cached: bool = False     # True if response came from fixture
 

@@ -6,13 +6,14 @@ Tracks investigation results and the agent's tool-use trajectory.
 import uuid
 from datetime import datetime, timezone
 from enum import Enum
+from typing import List, Dict, Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
 def generate_case_id() -> str:
     """Generate a unique 8-character hex ID prefixed with SENTRY-"""
-    return f"SENTRY-{uuid.uuid4().hex[:8].upper()}"
+    return f"SENTRY-{str(uuid.uuid4())[:8].upper()}"
 
 
 def generate_timestamp() -> str:
@@ -52,9 +53,9 @@ class CaseRecord(BaseModel):
     risk_score: int                 # 0-100
     classification: RiskClassification
     reasoning: str = ""
-    signals: list[str] = Field(default_factory=list)
-    tool_calls: list[ToolCall] = Field(default_factory=list)
+    signals: List[str] = Field(default_factory=list)
+    tool_calls: List[ToolCall] = Field(default_factory=list)
     action: str                     # e.g. "block_session"
     action_status: str              # "success" | "failed" | "pending"
     created_at: str = Field(default_factory=generate_timestamp)
-    updated_at: str | None = None
+    updated_at: Optional[str] = None

@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — Scenarios Router
 Endpoints for triggering pre-defined demo scenarios.
@@ -13,7 +15,7 @@ from models.event import Event, EventType, EventArtifacts, EventContext
 router = APIRouter(prefix="/api/scenarios", tags=["Scenarios"])
 
 # ── Pre-defined scenario events ───────────────────────────────────
-SCENARIOS: dict[str, Event] = {
+SCENARIOS: Dict[str, Event] = {
     "safe-login": Event(
         event_type=EventType.LOGIN,
         user="alice@corp.com",

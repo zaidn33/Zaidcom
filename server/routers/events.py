@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — Events Router
 Endpoints for ingesting and querying security events.
@@ -19,8 +21,8 @@ async def ingest_event(event: Event) -> BaseResponse[Event]:
     return BaseResponse(status="success", data=stored, message="Event ingested")
 
 
-@router.get("", response_model=BaseResponse[list[Event]])
-async def list_events() -> BaseResponse[list[Event]]:
+@router.get("", response_model=BaseResponse[List[Event]])
+async def list_events() -> BaseResponse[List[Event]]:
     """List all ingested events."""
     return BaseResponse(status="success", data=store.list_events())
 

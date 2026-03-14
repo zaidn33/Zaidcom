@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — SQLite Audit Store
 Persists Cases and Action history locally for the demo dashboard.
@@ -92,7 +94,7 @@ async def save_case(case: CaseRecord) -> None:
         logger.error("Failed to save CaseRecord %s: %s", case.case_id, exc)
 
 
-async def get_case(case_id: str) -> CaseRecord | None:
+async def get_case(case_id: str) -> Optional[CaseRecord]:
     """Fetch a single CaseRecord by ID."""
     async with aiosqlite.connect(DATABASE_URL) as db:
         db.row_factory = aiosqlite.Row
@@ -115,7 +117,7 @@ async def get_case(case_id: str) -> CaseRecord | None:
             )
 
 
-async def list_cases(limit: int = 50) -> list[CaseRecord]:
+async def list_cases(limit: int = 50) -> List[CaseRecord]:
     """Retrieve the latest cases for the dashboard."""
     cases = []
     async with aiosqlite.connect(DATABASE_URL) as db:
@@ -159,7 +161,7 @@ async def save_action(action: ActionResult) -> None:
         logger.error("Failed to save ActionResult %s: %s", action.action_id, exc)
 
 
-async def get_action_for_case(case_id: str) -> ActionResult | None:
+async def get_action_for_case(case_id: str) -> Optional[ActionResult]:
     """Get the action associated with a specific case."""
     async with aiosqlite.connect(DATABASE_URL) as db:
         db.row_factory = aiosqlite.Row

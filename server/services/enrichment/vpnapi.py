@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — vpnapi.io Enrichment Provider
 Detects VPN, proxy, and Tor usage for an IP address.
@@ -27,10 +29,10 @@ class VPNAPIProvider(BaseProvider):
     def name(self) -> str:
         return "vpnapi.io"
 
-    def _load_fixture(self, indicator: str) -> ProviderResult | None:
+    def _load_fixture(self, indicator: str) -> Optional[ProviderResult]:
         """Load cached fixture data for the given IP."""
         try:
-            data: dict[str, Any] = json.loads(FIXTURE_PATH.read_text())
+            data: Dict[str, Any] = json.loads(FIXTURE_PATH.read_text())
             if indicator in data:
                 entry = data[indicator]
                 return ProviderResult(

@@ -3,7 +3,7 @@ Sentry AI — Base Response Wrapper (Pydantic v2)
 Standardizes all API outputs: { "status": ..., "data": ..., "message": ... }
 """
 
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, TypeVar, Optional, List, Dict
 
 from pydantic import BaseModel
 
@@ -19,5 +19,5 @@ class BaseResponse(BaseModel, Generic[T]):
         return BaseResponse(status="error", message="Not found", data=None)
     """
     status: str = "success"         # "success" | "error"
-    data: T | None = None
+    data: Optional[T] = None
     message: str = ""

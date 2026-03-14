@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — Internal Context Store
 Pre-seeded data simulating organisational knowledge:
@@ -7,7 +9,7 @@ This data is used by the orchestrator during enrichment (Stage 2+).
 """
 
 # ── Known Devices (user → list of device fingerprints) ────────────
-KNOWN_DEVICES: dict[str, list[str]] = {
+KNOWN_DEVICES: Dict[str, List[str]] = {
     "john@corp.com": ["chrome-win-1", "firefox-mac-2"],
     "alice@corp.com": ["edge-win-3"],
     "ops@corp.com": ["chrome-linux-4"],
@@ -21,7 +23,7 @@ EXECUTIVES: set[str] = {
 }
 
 # ── Recent Login History (user → list of login records) ───────────
-RECENT_LOGINS: dict[str, list[dict]] = {
+RECENT_LOGINS: Dict[str, List[dict]] = {
     "john@corp.com": [
         {"ip": "10.0.0.50", "location": "Toronto, CA", "time": "2026-03-14T01:00:00Z", "device": "chrome-win-1"},
         {"ip": "10.0.0.50", "location": "Toronto, CA", "time": "2026-03-13T18:30:00Z", "device": "chrome-win-1"},

@@ -1,3 +1,5 @@
+from typing import List, Dict, Any, Optional
+from typing import Optional, List, Dict, Any
 """
 Sentry AI — Orchestrator Service
 Runs the full investigation pipeline: enrichment → signal detection → scoring.
@@ -100,9 +102,9 @@ async def investigate(event: Event) -> CaseRecord:
       7. Compute risk score + reasoning
       8. Return populated CaseRecord (action deferred to Stage 3)
     """
-    tool_calls: list[ToolCall] = []
-    signals: list[str] = []
-    context_details: dict[str, str] = {}
+    tool_calls: List[ToolCall] = []
+    signals: List[str] = []
+    context_details: Dict[str, str] = {}
 
     # ── Step 1-2: Classify ────────────────────────────────────────
     logger.info("[Orchestrator] Investigating event %s (type=%s, user=%s)",
