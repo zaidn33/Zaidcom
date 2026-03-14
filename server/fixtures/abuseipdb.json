@@ -1,0 +1,26 @@
+{
+  "185.220.101.1": {
+    "abuse_confidence_score": 95,
+    "total_reports": 847,
+    "country_code": "RU",
+    "isp": "Unknown ISP",
+    "is_tor": true,
+    "summary": "95% abuse confidence — 847 reports, Tor exit node"
+  },
+  "10.0.0.55": {
+    "abuse_confidence_score": 0,
+    "total_reports": 0,
+    "country_code": "CA",
+    "isp": "Corp Internal",
+    "is_tor": false,
+    "summary": "Clean — 0% abuse confidence, internal IP"
+  },
+  "10.0.0.50": {
+    "abuse_confidence_score": 0,
+    "total_reports": 0,
+    "country_code": "CA",
+    "isp": "Corp Internal",
+    "is_tor": false,
+    "summary": "Clean — 0% abuse confidence, internal IP"
+  }
+}

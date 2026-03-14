@@ -1,0 +1,29 @@
+{
+  "185.220.101.1": {
+    "city": "Moscow",
+    "region": "Moscow",
+    "country": "RU",
+    "org": "AS12345 Unknown ISP",
+    "timezone": "Europe/Moscow",
+    "loc": "55.7558,37.6173",
+    "summary": "Moscow, RU — AS12345 Unknown ISP"
+  },
+  "10.0.0.55": {
+    "city": "Toronto",
+    "region": "Ontario",
+    "country": "CA",
+    "org": "Corp Internal",
+    "timezone": "America/Toronto",
+    "loc": "43.6532,-79.3832",
+    "summary": "Toronto, CA — Corp Internal"
+  },
+  "10.0.0.50": {
+    "city": "Toronto",
+    "region": "Ontario",
+    "country": "CA",
+    "org": "Corp Internal",
+    "timezone": "America/Toronto",
+    "loc": "43.6532,-79.3832",
+    "summary": "Toronto, CA — Corp Internal"
+  }
+}

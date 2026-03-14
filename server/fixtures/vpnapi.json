@@ -1,0 +1,23 @@
+{
+  "185.220.101.1": {
+    "vpn": true,
+    "proxy": true,
+    "tor": true,
+    "relay": false,
+    "summary": "VPN + proxy + Tor detected"
+  },
+  "10.0.0.55": {
+    "vpn": false,
+    "proxy": false,
+    "tor": false,
+    "relay": false,
+    "summary": "No VPN/proxy/Tor detected"
+  },
+  "10.0.0.50": {
+    "vpn": false,
+    "proxy": false,
+    "tor": false,
+    "relay": false,
+    "summary": "No VPN/proxy/Tor detected"
+  }
+}

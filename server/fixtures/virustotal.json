@@ -1,0 +1,44 @@
+{
+  "185.220.101.1": {
+    "malicious": 12,
+    "suspicious": 3,
+    "harmless": 55,
+    "undetected": 10,
+    "summary": "12 vendors flagged IP as malicious"
+  },
+  "10.0.0.55": {
+    "malicious": 0,
+    "suspicious": 0,
+    "harmless": 70,
+    "undetected": 10,
+    "summary": "Clean — no vendors flagged"
+  },
+  "10.0.0.50": {
+    "malicious": 0,
+    "suspicious": 0,
+    "harmless": 72,
+    "undetected": 8,
+    "summary": "Clean — no vendors flagged"
+  },
+  "c0rp.com": {
+    "malicious": 9,
+    "suspicious": 6,
+    "harmless": 18,
+    "undetected": 47,
+    "summary": "9 vendors flagged domain as malicious (typosquat)"
+  },
+  "c0rp-login.evil.com": {
+    "malicious": 8,
+    "suspicious": 5,
+    "harmless": 20,
+    "undetected": 47,
+    "summary": "8 vendors flagged domain as malicious"
+  },
+  "https://c0rp-login.evil.com/verify": {
+    "malicious": 10,
+    "suspicious": 4,
+    "harmless": 15,
+    "undetected": 51,
+    "summary": "10 vendors flagged URL as phishing"
+  }
+}
