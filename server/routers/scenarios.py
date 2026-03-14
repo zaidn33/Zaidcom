@@ -9,7 +9,6 @@ from models.case import CaseRecord
 from models.response import BaseResponse
 from services.orchestrator import investigate
 from models.event import Event, EventType, EventArtifacts, EventContext
-from store.memory import store
 
 router = APIRouter(prefix="/api/scenarios", tags=["Scenarios"])
 
@@ -58,11 +57,9 @@ async def trigger_scenario(name: str) -> BaseResponse[CaseRecord]:
 
     # Create a fresh event for this scenario run
     event = SCENARIOS[name].model_copy(deep=True)
-    store.add_event(event)
 
-    # Run through the orchestrator (stub in Stage 1, real in Stage 3)
+    # Run through the orchestrator (Stage 3 runs full simulation + saves to DB)
     case = await investigate(event)
-    store.add_case(case)
 
     return BaseResponse(
         status="success",

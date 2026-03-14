@@ -14,6 +14,7 @@ from config import settings
 from middleware import ObservabilityMiddleware
 from models.response import BaseResponse
 from routers import events, scenarios, cases, actions
+import store.audit
 
 # ── Logging ───────────────────────────────────────────────────────
 logging.basicConfig(
@@ -29,6 +30,7 @@ logger = logging.getLogger("sentry.main")
 async def lifespan(app: FastAPI):
     """Startup / shutdown lifecycle."""
     logger.info("Sentry AI starting  —  DEMO_MODE=%s", settings.DEMO_MODE)
+    await store.audit.init_db()
     yield
     logger.info("Sentry AI shutting down")
 

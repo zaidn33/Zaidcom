@@ -1,0 +1,118 @@
+﻿{
+    "status":  "success",
+    "data":  [
+                 {
+                     "case_id":  "SENTRY-1BD050FF",
+                     "event_id":  "ca71b840-238c-406f-a026-e8c2ad08277b",
+                     "risk_score":  50,
+                     "classification":  "medium",
+                     "reasoning":  "MEDIUM risk due to: IP flagged as malicious by threat intelligence (VirusTotal flagged indicator: 9 vendors); high-confidence phishing indicators in email/URL (9 vendors confirmed phishing indicator).",
+                     "signals":  [
+                                     "malicious_ip",
+                                     "high_confidence_phish"
+                                 ],
+                     "tool_calls":  [
+                                        {
+                                            "tool":  "VirusTotal",
+                                            "status":  "cached",
+                                            "latency_ms":  0.4,
+                                            "summary":  "9 vendors flagged domain as malicious (typosquat)"
+                                        },
+                                        {
+                                            "tool":  "VirusTotal",
+                                            "status":  "cached",
+                                            "latency_ms":  0.2,
+                                            "summary":  "10 vendors flagged URL as phishing"
+                                        }
+                                    ],
+                     "action":  "quarantine_email",
+                     "action_status":  "success",
+                     "created_at":  "2026-03-14T18:23:45.801718+00:00",
+                     "updated_at":  "2026-03-14T18:23:45.807201+00:00"
+                 },
+                 {
+                     "case_id":  "SENTRY-CA9299A1",
+                     "event_id":  "c718f691-cb2e-4e0c-84b5-01ad53e0e8d1",
+                     "risk_score":  85,
+                     "classification":  "high",
+                     "reasoning":  "HIGH risk due to: IP flagged as malicious by threat intelligence (VirusTotal: 12 vendors flagged; AbuseIPDB: 95% confidence); active VPN or proxy usage detected (VPN + proxy + Tor active); impossible travel detected between login locations (from Toronto, CA to Moscow, RU); login from an unrecognised device (device \u0027unknown-device-99\u0027 not in known list: [\u0027chrome-win-1\u0027, \u0027firefox-mac-2\u0027]).",
+                     "signals":  [
+                                     "malicious_ip",
+                                     "vpn_detected",
+                                     "impossible_travel",
+                                     "unknown_device"
+                                 ],
+                     "tool_calls":  [
+                                        {
+                                            "tool":  "VirusTotal",
+                                            "status":  "cached",
+                                            "latency_ms":  0.4,
+                                            "summary":  "12 vendors flagged IP as malicious"
+                                        },
+                                        {
+                                            "tool":  "AbuseIPDB",
+                                            "status":  "cached",
+                                            "latency_ms":  0.3,
+                                            "summary":  "95% abuse confidence Ã¢â¬â 847 reports, Tor exit node"
+                                        },
+                                        {
+                                            "tool":  "IPinfo",
+                                            "status":  "cached",
+                                            "latency_ms":  0.2,
+                                            "summary":  "Moscow, RU Ã¢â¬â AS12345 Unknown ISP"
+                                        },
+                                        {
+                                            "tool":  "vpnapi.io",
+                                            "status":  "cached",
+                                            "latency_ms":  0.2,
+                                            "summary":  "VPN + proxy + Tor detected"
+                                        }
+                                    ],
+                     "action":  "block_session",
+                     "action_status":  "success",
+                     "created_at":  "2026-03-14T18:23:39.648665+00:00",
+                     "updated_at":  "2026-03-14T18:23:39.654798+00:00"
+                 },
+                 {
+                     "case_id":  "SENTRY-61557B33",
+                     "event_id":  "94b9a9c7-36c0-484b-aa38-8b216513e639",
+                     "risk_score":  0,
+                     "classification":  "low",
+                     "reasoning":  "LOW risk due to: source matched trusted allowlist (risk reduced) (IP 10.0.0.55 is in trusted allowlist).",
+                     "signals":  [
+                                     "safe_allowlist"
+                                 ],
+                     "tool_calls":  [
+                                        {
+                                            "tool":  "VirusTotal",
+                                            "status":  "cached",
+                                            "latency_ms":  0.3,
+                                            "summary":  "Clean Ã¢â¬â no vendors flagged"
+                                        },
+                                        {
+                                            "tool":  "AbuseIPDB",
+                                            "status":  "cached",
+                                            "latency_ms":  0.3,
+                                            "summary":  "Clean Ã¢â¬â 0% abuse confidence, internal IP"
+                                        },
+                                        {
+                                            "tool":  "IPinfo",
+                                            "status":  "cached",
+                                            "latency_ms":  0.2,
+                                            "summary":  "Toronto, CA Ã¢â¬â Corp Internal"
+                                        },
+                                        {
+                                            "tool":  "vpnapi.io",
+                                            "status":  "cached",
+                                            "latency_ms":  0.2,
+                                            "summary":  "No VPN/proxy/Tor detected"
+                                        }
+                                    ],
+                     "action":  "allow",
+                     "action_status":  "success",
+                     "created_at":  "2026-03-14T18:23:35.320768+00:00",
+                     "updated_at":  "2026-03-14T18:23:35.325847+00:00"
+                 }
+             ],
+    "message":  "Retrieved 3 cases"
+}

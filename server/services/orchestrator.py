@@ -8,15 +8,20 @@ import asyncio
 import logging
 import time
 
+from datetime import datetime, timezone
+
 from models.event import Event, EventType
 from models.case import CaseRecord, ToolCall, RiskClassification
+from models.action import ActionRequest, ActionType
 from services.enrichment import ProviderResult
 from services.enrichment.virustotal import VirusTotalProvider
 from services.enrichment.abuseipdb import AbuseIPDBProvider
 from services.enrichment.ipinfo import IPinfoProvider
 from services.enrichment.vpnapi import VPNAPIProvider
 from services.scoring import compute_risk, ScoringResult
-from store.context import KNOWN_DEVICES, RECENT_LOGINS, TRUSTED_IPS, SAFE_DOMAINS
+from services.action_engine import execute_action
+from store.audit import save_case
+from store.context import KNOWN_DEVICES, RECENT_LOGINS, TRUSTED_IPS, SAFE_DOMAINS, EXECUTIVES
 
 logger = logging.getLogger("sentry.orchestrator")
 
@@ -222,13 +227,63 @@ async def investigate(event: Event) -> CaseRecord:
         event.event_id, scoring.score, scoring.classification.value, signals,
     )
 
-    # ── Step 8: Build CaseRecord (action deferred to Stage 3) ────
-    return CaseRecord(
+    # ── Step 7: Guardrails & Action Selection ─────────────────────
+    action_to_take = ActionType.ALLOW
+    reason = scoring.reasoning
+
+    if event.user in EXECUTIVES and scoring.classification in (RiskClassification.MEDIUM, RiskClassification.HIGH):
+        # Executive Guardrail
+        action_to_take = ActionType.ESCALATE_TO_ANALYST
+        reason = f"Executive account requires manual review. Original risk: {scoring.classification.value.upper()}."
+    elif event.event_type == EventType.PHISHING_EMAIL and "high_confidence_phish" in signals:
+        # Phishing Guardrail
+        action_to_take = ActionType.QUARANTINE_EMAIL
+        reason = "High-confidence phishing indicator triggered hard quarantine."
+    else:
+        # Standard Risk Mapping
+        if scoring.classification == RiskClassification.LOW:
+            action_to_take = ActionType.ALLOW
+        elif scoring.classification == RiskClassification.MEDIUM:
+            action_to_take = ActionType.REQUIRE_MFA
+        elif scoring.classification == RiskClassification.HIGH:
+            if event.event_type == EventType.LOGIN:
+                action_to_take = ActionType.BLOCK_SESSION
+            elif event.event_type == EventType.URL_CLICK:
+                action_to_take = ActionType.BLOCK_URL
+
+    # ── Step 8: Execute Action (Action Engine) ────────────────────
+    logger.info("[Orchestrator] Executing logic for action: %s", action_to_take.value)
+    
+    # We must instantiate a CaseRecord first so we have a case_id for the action request
+    case = CaseRecord(
         event_id=event.event_id,
         risk_score=scoring.score,
         classification=scoring.classification,
+        reasoning=scoring.reasoning,
         signals=scoring.signals,
         tool_calls=tool_calls,
-        action="",
-        action_status="pending",
+        action=action_to_take.value,
+        action_status="pending"
     )
+
+    if action_to_take == ActionType.ESCALATE_TO_ANALYST:
+        case.action_status = "escalated"
+    else:
+        request = ActionRequest(
+            case_id=case.case_id,
+            action_type=action_to_take,
+            reason=reason
+        )
+        action_result = await execute_action(request)
+        case.action_status = action_result.status
+        # Note: the action result is saved to DB within execute_action route typically, 
+        # but since we called engine directly, let's explicitly save the action via audit:
+        from store.audit import save_action
+        await save_action(action_result)
+
+    # ── Step 9: Time to Mitigate & Persist Case ───────────────────
+    case.updated_at = datetime.now(timezone.utc).isoformat()
+    await save_case(case)
+
+    logger.info("[Orchestrator] Case %s pipeline complete. Mitigated in %s", case.case_id, case.updated_at)
+    return case

@@ -14,6 +14,12 @@ KNOWN_DEVICES: dict[str, list[str]] = {
     "mike@corp.com": ["safari-mac-5", "chrome-win-6"],
 }
 
+# ── Executives (High-Risk Targets) ─────────────────────────────────
+EXECUTIVES: set[str] = {
+    "alice@corp.com",
+    "ceo@corp.com",
+}
+
 # ── Recent Login History (user → list of login records) ───────────
 RECENT_LOGINS: dict[str, list[dict]] = {
     "john@corp.com": [

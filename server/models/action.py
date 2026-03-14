@@ -3,11 +3,21 @@ Sentry AI — Action Schemas (Pydantic v2)
 Defines the request/result models for reversible demo actions.
 """
 
+import uuid
 from datetime import datetime, timezone
 from enum import Enum
-from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field
+
+
+def generate_action_id() -> str:
+    """Generate a unique 8-character hex ID prefixed with ACT-"""
+    return f"ACT-{uuid.uuid4().hex[:8].upper()}"
+
+
+def generate_timestamp() -> str:
+    """Generate an ISO-formatted timestamp in UTC."""
+    return datetime.now(timezone.utc).isoformat()
 
 
 class ActionType(str, Enum):
@@ -30,15 +40,16 @@ class ActionRequest(BaseModel):
 
 
 class ActionResult(BaseModel):
-    """Result of an executed (or rolled-back) action."""
+    """
+    The result of executing a countermeasure.
+    Used for audit logging and the UI dashboard.
+    """
     model_config = ConfigDict(from_attributes=True)
 
-    action_id: str = Field(default_factory=lambda: str(uuid4()))
+    action_id: str = Field(default_factory=generate_action_id)
     case_id: str
     action_type: ActionType
     status: str = "success"         # "success" | "failed" | "rolled_back"
     reason: str = ""
     reversible: bool = True
-    executed_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc)
-    )
+    executed_at: str = Field(default_factory=generate_timestamp)
